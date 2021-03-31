@@ -1,6 +1,8 @@
 package model.forms;
 
-public class Rectangle extends BasicForm{
+public class Rectangle extends BasicForm {
+    double lenght;
+    double width;
 
     public Rectangle(double x, double y) {
         super(x, y);
@@ -8,6 +10,6 @@ public class Rectangle extends BasicForm{
 
     @Override
     public String toString() {
-        return "Rectangle{} at x=" + this.x + " and y=" + this.y ;
+        return "Rectangle{} at x=" + this.x + " and y=" + this.y;
     }
 }
