@@ -13,7 +13,11 @@ public class Project {
     }
 
 
-    public void toFile(){
+    public void toFile(String path){
 
+    }
+
+    public Project fileToProject(){
+        return null;
     }
 }
