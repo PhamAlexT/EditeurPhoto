@@ -27,12 +27,13 @@ public class Main extends Application {
 
         System.out.println(scene.toString());
         primaryStage.show();
+
+
     }
 
     public BorderPane getPane(){
         return pane;
     }
-
 
     public static void main(String[] args) {
         launch(args);

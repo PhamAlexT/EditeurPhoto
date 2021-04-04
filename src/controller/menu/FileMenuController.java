@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import model.Project;
 import view.ApplicationMenu;
 import view.Workspace;
 
@@ -36,7 +37,8 @@ public class FileMenuController extends MenuPattern {
         fc.setTitle("Ouvrir un projet");
         File file = fc.showOpenDialog(am.getScene().getWindow());
         if (file != null){
-            //TODO: Le reste
+            Project p = Project.fileToProject(file);
+
         }
     }
 
