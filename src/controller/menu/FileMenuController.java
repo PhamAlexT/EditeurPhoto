@@ -25,9 +25,8 @@ public class FileMenuController extends MenuPattern {
         fc.setTitle("Nouveau projet à partir d'une image");
         File file = fc.showOpenDialog(this.am.getScene().getWindow());
         if (file != null){
-            Workspace wp = new Workspace(new Image(file.toURI().toString()));
-            ImageView iw = wp.getIW();
-            am.getMain().getPane().setCenter(iw);
+            System.out.println("On créer un projet et on affiche la vue");
+            new Workspace(this.am.getMain(),new Image(file.toURI().toString()));
         }
     }
 
