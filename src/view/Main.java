@@ -4,6 +4,8 @@ package view;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Screen;
 import javafx.application.Application;
@@ -51,7 +53,7 @@ public class Main extends Application {
 
         StackPane p = new StackPane();
 
-        p.setPrefSize(1600,1000); //set a default size for your stackpane
+        //p.setPrefSize(1600,1000); //set a default size for your stackpane
         Image img = new Image("https://upload.wikimedia.org/wikipedia/commons/c/c7/Code_Geass_logo.jpg"); //create an image
         ImageView v = new ImageView(img); //create an imageView and pass the image
 
@@ -60,29 +62,36 @@ public class Main extends Application {
 
 
 
-        ScrollPane scrollImgViewer = new ScrollPane();
+        ScrollPane scrollImgViewer = new ScrollPane(new Group(p));
         scrollImgViewer.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollImgViewer.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-
-        scrollImgViewer.setContent(p);
+        scrollImgViewer.setFitToWidth(true);
+        scrollImgViewer.setFitToHeight(true);
+        //scrollImgViewer.setContent(p);
         pane.setCenter(scrollImgViewer);
 
         GridPane bottomBar = new GridPane();
-        Slider scaling = new Slider(0,1,0.5);
+        Slider scaling = new Slider(0,20,0.5);
         scaling.setShowTickLabels(true);
         scaling.setMajorTickUnit(0.25f);
         scaling.setBlockIncrement(0.1f);
         bottomBar.getChildren().add(scaling);
         bottomBar.setAlignment(Pos.CENTER_RIGHT);
         pane.setBottom(bottomBar);
+
+
         scaling.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                v.setScaleX(new_val.doubleValue());
-                v.setScaleY(new_val.doubleValue());
+                p.setScaleX(new_val.doubleValue());
+                p.setScaleY(new_val.doubleValue());
+                for (Node n : p.getChildren()) {
+                    n.setScaleX(new_val.doubleValue());
+                    n.setScaleY(new_val.doubleValue());
+                }
+                System.out.println(p.getWidth());
             }
         });
-
 
 
         scene = new Scene(pane);
