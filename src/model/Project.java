@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Project {
     Image img;
-    ArrayList<Layer> listOfLayer;
+
 
 
     public Project(){
