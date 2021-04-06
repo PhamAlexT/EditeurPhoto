@@ -5,9 +5,12 @@ package view;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 import java.util.Stack;
@@ -38,7 +41,12 @@ public class Workspace {
     public void linkToMain(){
         System.out.println("On a link");
         main.addNodeCenter(navigationInterface.getScrollPane());
-        main.addNodeBottom(navigationInterface.getSlider(),null);
+
+        main.addNodeBottom(new HBox(new Label("Zoom"),navigationInterface.getSlider(),navigationInterface.getScaleFactor()),0,0);
+        //main.addNodeBottom(new Label("Zoom:"),0,0);
+        //main.addNodeBottom(navigationInterface.getSlider(),1,0);
+        //main.addNodeBottom(navigationInterface.getScaleFactor(),2,2);
+
     }
 
     public StackPane getStackPane() {
