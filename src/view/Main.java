@@ -1,6 +1,7 @@
 package view;
 
 
+import controller.menu.FileMenuController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -33,7 +34,13 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
 
         root = new BorderPane();
-        root.setTop(new ApplicationMenu(this));
+        Workspace ws = new Workspace(root);
+        ApplicationMenu am = new ApplicationMenu(this);
+        FileMenuController fm = new FileMenuController(am, ws);
+        am.addListener(fm);
+        root.setTop(am);
+        
+        
 
         StackPane spr = new StackPane();
 

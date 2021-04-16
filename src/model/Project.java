@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Project {
     Image img;
-
+    
 
 
     public Project(){

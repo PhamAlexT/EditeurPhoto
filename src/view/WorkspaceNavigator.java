@@ -22,6 +22,7 @@ public class WorkspaceNavigator {
 		handleScaler();
 	}
 
+	
 	public void createScrollPane() {
 		scrollPane = new ScrollPane(workspace.getGroup());
 		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -30,6 +31,7 @@ public class WorkspaceNavigator {
 		scrollPane.setFitToHeight(true);
 	}
 
+	
 	public void createScaler() {
 		scaler = new Slider(0, 5, 1);
 		scaler.setShowTickLabels(true);
@@ -41,6 +43,7 @@ public class WorkspaceNavigator {
 
 	}
 
+	
 	private void handleScaler() {
 		scaler.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
@@ -56,14 +59,17 @@ public class WorkspaceNavigator {
 		});
 	}
 
+	
 	public ScrollPane getScrollPane() {
 		return scrollPane;
 	}
 
+	
 	public Slider getSlider() {
 		return scaler;
 	}
 
+	
 	public TextField getScaleFactor() {
 		return this.scaleFactor;
 	}

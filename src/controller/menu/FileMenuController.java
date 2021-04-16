@@ -10,11 +10,14 @@ import view.Workspace;
 
 import java.io.File;
 
-public class FileMenuController extends MenuPattern {
+public class FileMenuController {
 	
+	private ApplicationMenu am;
+	private Workspace ws;
 	
-    public FileMenuController(ApplicationMenu am) {
-        super(am);
+    public FileMenuController(ApplicationMenu am, Workspace ws) {
+    		this.am = am;
+    		this.ws = ws;
     }
     
 
@@ -33,7 +36,8 @@ public class FileMenuController extends MenuPattern {
         File file = fc.showOpenDialog(this.am.getScene().getWindow());
         if (file != null){
             System.out.println("On créer un projet et on affiche la vue");
-            new Workspace(this.am.getMain(),new Image(file.toURI().toString()));
+            Image img = new Image(file.toURI().toString());
+            ws.setImage(img);
         }
     }
     

@@ -18,8 +18,6 @@ public class Layer extends Canvas {
         super(width, height);
         this.name = s;
         
-        System.out.println("Layer créer");
-        
         gc = this.getGraphicsContext2D();
         
         createLayerHandler();
