@@ -22,7 +22,6 @@ public class Main extends Application {
 
     Scene scene;
     BorderPane root;
-    GraphicsContext gc;
     GridPane bottomArea;
 
     public static void main(String[] args) {
@@ -36,10 +35,8 @@ public class Main extends Application {
         root = new BorderPane();
         root.setTop(new ApplicationMenu(this));
 
-        StackPane spl = new StackPane(new Button("Test"));
         StackPane spr = new StackPane();
 
-        root.setLeft(spl);
         root.setRight(spr);
 
         bottomArea = new GridPane();
@@ -50,7 +47,6 @@ public class Main extends Application {
         scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public void addNodeCenter(Node n){
@@ -58,6 +54,6 @@ public class Main extends Application {
     }
 
     public void addNodeBottom(Node n, int column, int row){
-        bottomArea.add(n,1,0);
+        bottomArea.add(n,column,row);
     }
 }

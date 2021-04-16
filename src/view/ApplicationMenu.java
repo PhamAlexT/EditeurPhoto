@@ -1,9 +1,12 @@
 package view;
 
 import controller.menu.FileMenuController;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.ToggleGroup;
 
 public class ApplicationMenu extends MenuBar {
     Main main;
@@ -14,10 +17,14 @@ public class ApplicationMenu extends MenuBar {
         Menu editMenu = new Menu("Editer");
         Menu selectionMenu = new Menu("SÃ©lection");
         Menu settingsMenu = new Menu("ParamÃ¨tres");
-        Menu windowMenu = new Menu("FenÃªtre");
+        Menu formMenu = new Menu("Formes Géométriques");
+        Menu windowMenu = new Menu("Fenêtre");
         Menu helpMenu = new Menu("Aide");
 
+        
         FileMenuController fm = new FileMenuController(this);
+        
+    	
         // Menu Fichier
         MenuItem newProject = new MenuItem("Nouveau");
         newProject.setOnAction(e->fm.newFile());
@@ -30,11 +37,26 @@ public class ApplicationMenu extends MenuBar {
 
         MenuItem saveProjectAs = new MenuItem("Enregistrer sous");
         saveProjectAs.setOnAction(e->fm.saveProjectAs());
-
+        
         fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs);
+        
+        
+        //Menu Formes Géométriques
+        ToggleGroup toggleGroup = new ToggleGroup();
+        
+        CheckMenuItem line = new CheckMenuItem("Ligne");
+        //line.setToggleGroup(toggleGroup);
+        
+        CheckMenuItem rectangle = new CheckMenuItem("Rectangle");
+        //rectangle.setToggleGroup(toggleGroup);
+        
+        CheckMenuItem cercle = new CheckMenuItem("Cercle");
+        //cercle.setToggleGroup(toggleGroup);
+        
+        
+        formMenu.getItems().addAll(line, rectangle, cercle);
 
-
-        this.getMenus().addAll(fileMenu,editMenu,selectionMenu,settingsMenu,windowMenu,helpMenu);
+        this.getMenus().addAll(fileMenu,editMenu,selectionMenu,settingsMenu,formMenu,windowMenu,helpMenu);
 
     }
 
