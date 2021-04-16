@@ -5,6 +5,7 @@ import javafx.beans.Observable;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -28,13 +29,17 @@ public class Workspace {
     private ChoiceBox<String> choiceBox;
     private ImageView imageView = new ImageView();
     private Image imgSource;
-    ArrayList<Layer> layers;
+    private ArrayList<Layer> layers;
+    private Button addLayer;
     
 
     public Workspace(BorderPane mainView) {
         this.root = mainView;
         
         choiceBox = new ChoiceBox<String>();
+        
+        addLayer = new Button("Add Layer");
+        addLayer.setOnAction(e -> addNewLayer());
 
     }
 
@@ -44,13 +49,10 @@ public class Workspace {
         
         root.setCenter(navigationInterface.getScrollPane()); //On pourrait utiliser un setCenter sur le borderpane root
 
-        HBox bottomBar = new HBox(new Label("Zoom"), navigationInterface.getSlider(), navigationInterface.getScaleFactor(), choiceBox);
+        HBox bottomBar = new HBox(new Label("Zoom"), navigationInterface.getSlider(), navigationInterface.getScaleFactor(), choiceBox, addLayer);
 		root.setBottom(bottomBar); //On pourrait utiliser un setBottom sur le borderpane root
         
     }
-
-    
-    //That's more of a model function, have to look wheter this can be moved.
 
     public void addNewLayer() {
         String name = "Calque " + (layers.size() + 1);
@@ -66,8 +68,16 @@ public class Workspace {
 
     }
 
-    // This should be extracted with the above function into a controller. (Not all the function but there should at least be an update view function in the controlelr)
-    // When a new calque is created the controller update the view.
+    
+    private void addLayer2View() {
+    	int newLayerPos = layers.size() - 1;
+    	Layer newLayer = layers.get(newLayerPos);
+    	
+		group.getChildren().add(newLayer); //To change for when we have more layer
+        layers.get(newLayerPos).toFront(); //To change for when we have more layer
+	}
+    
+    
 	private void updateChoiceBox(Layer newLayer) {
 		choiceBox.getItems().add(newLayer.getName()); //Calque selection
         choiceBox.setValue(newLayer.getName());
@@ -87,15 +97,6 @@ public class Workspace {
         navigationInterface = new WorkspaceNavigator(this);
         
         addToMain();
-	}
-	
-	
-	//void 
-	
-
-	private void addLayer2View() {
-		group.getChildren().add(layers.get(0)); //To change for when we have more layer
-        layers.get(0).toFront(); //To change for when we have more layer
 	}
 
 	
