@@ -1,6 +1,7 @@
 package view;
 
 import controller.menu.FileMenuController;
+import controller.menu.FilterMenu;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -17,9 +18,10 @@ public class ApplicationMenu extends MenuBar {
         Menu fileMenu = new Menu("Fichier");
         Menu editMenu = new Menu("Editer");
         Menu selectionMenu = new Menu("SÃ©lection");
+        Menu filtersMenu = new Menu("Filtres");
         Menu settingsMenu = new Menu("ParamÃ¨tres");
-        Menu formMenu = new Menu("Formes Géométriques");
-        Menu windowMenu = new Menu("Fenêtre");
+        Menu formMenu = new Menu("Formes GÃ©omÃ©triques");
+        Menu windowMenu = new Menu("FenÃªtre");
         Menu helpMenu = new Menu("Aide");
 
         
@@ -41,7 +43,7 @@ public class ApplicationMenu extends MenuBar {
         fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs);
         
         
-        //Menu Formes Géométriques
+        //Menu Formes Gï¿½omï¿½triques
         ToggleGroup toggleGroup = new ToggleGroup();
         
         CheckMenuItem line = new CheckMenuItem("Ligne");
@@ -56,7 +58,17 @@ public class ApplicationMenu extends MenuBar {
         
         formMenu.getItems().addAll(line, rectangle, cercle);
 
-        this.getMenus().addAll(fileMenu,editMenu,selectionMenu,settingsMenu,formMenu,windowMenu,helpMenu);
+
+        //Filtres
+        new FilterMenu().getFilters().forEach(filter -> {
+            MenuItem item = new MenuItem(filter.getName());
+            item.setOnAction(e->{
+                //TODO: Associer l'action Ã  l'image view
+                System.out.println("Associer !!");
+            });
+            filtersMenu.getItems().add(item);
+        });
+        this.getMenus().addAll(fileMenu,editMenu,selectionMenu,filtersMenu,settingsMenu,formMenu,windowMenu,helpMenu);
 
     }
     
@@ -80,5 +92,4 @@ public class ApplicationMenu extends MenuBar {
     			break;
     	}
     }
-
 }
