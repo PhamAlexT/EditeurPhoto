@@ -2,6 +2,7 @@ package view;
 
 
 import javafx.beans.Observable;
+
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
@@ -19,13 +20,14 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class Workspace {
-    BorderPane root;//Idée : à la place du main passer le root en param
+    BorderPane root;//IdÃ©e : Ã  la place du main passer le root en param
     
     WorkspaceNavigator navigationInterface;
     Group group; // Pour mettre tout les layers;
     StackPane stackPane;
-    ChoiceBox<String> choiceBox;
-    
+    private ChoiceBox<String> choiceBox;
+    private ImageView imageView = new ImageView();
+    private Image imgSource;
     ArrayList<Layer> layers;
     
 
@@ -73,7 +75,8 @@ public class Workspace {
 	
 	
 	public void setImage(Image image) {
-		ImageView imageView = new ImageView(image);
+		imgSource = image;
+		imageView.setImage(image);
         stackPane = new StackPane(imageView);
         
         group = new Group(stackPane);
@@ -85,7 +88,10 @@ public class Workspace {
         
         addToMain();
 	}
-
+	
+	
+	//void 
+	
 
 	private void addLayer2View() {
 		group.getChildren().add(layers.get(0)); //To change for when we have more layer
@@ -100,5 +106,15 @@ public class Workspace {
     
     public Group getGroup() {
         return group;
+    }
+    
+    
+    public void changeImage(Image img) {
+    	this.imageView.setImage(img);
+    }
+    
+    
+    public Image getImage() {
+    	return this.imgSource;
     }
 }

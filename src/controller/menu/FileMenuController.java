@@ -31,11 +31,11 @@ public class FileMenuController {
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
         
-        fc.setTitle("Nouveau projet à partir d'une image");
+        fc.setTitle("Nouveau projet Ã  partir d'une image");
         
         File file = fc.showOpenDialog(this.am.getScene().getWindow());
         if (file != null){
-            System.out.println("On créer un projet et on affiche la vue");
+            System.out.println("On crÃ©er un projet et on affiche la vue");
             Image img = new Image(file.toURI().toString());
             ws.setImage(img);
         }
@@ -70,4 +70,14 @@ public class FileMenuController {
         
         File file = fc.showSaveDialog(am.getScene().getWindow());
     }
+    
+    
+    public void changeImage(Image img) {
+    	ws.changeImage(img);
+    }
+    
+    public Image getImage() {
+    	return ws.getImage();
+    }
+    
 }

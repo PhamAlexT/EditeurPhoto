@@ -17,9 +17,9 @@ public class ApplicationMenu extends MenuBar {
 
         Menu fileMenu = new Menu("Fichier");
         Menu editMenu = new Menu("Editer");
-        Menu selectionMenu = new Menu("Sélection");
+        Menu selectionMenu = new Menu("SÃ©lection");
         Menu filtersMenu = new Menu("Filtres");
-        Menu settingsMenu = new Menu("Paramètres");
+        Menu settingsMenu = new Menu("ParamÃ¨tres");
         Menu formMenu = new Menu("Formes Géométriques");
         Menu windowMenu = new Menu("Fenêtre");
         Menu helpMenu = new Menu("Aide");
@@ -43,7 +43,10 @@ public class ApplicationMenu extends MenuBar {
         fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs);
         
         
-        //Menu Formes G�om�triques
+        
+        
+        
+        //Menu Formes Géométriques
         ToggleGroup toggleGroup = new ToggleGroup();
         
         CheckMenuItem line = new CheckMenuItem("Ligne");
@@ -55,19 +58,19 @@ public class ApplicationMenu extends MenuBar {
         CheckMenuItem cercle = new CheckMenuItem("Cercle");
         //cercle.setToggleGroup(toggleGroup);
         
-        
         formMenu.getItems().addAll(line, rectangle, cercle);
 
-
-        //Filtres
+      
+      //Filtres
         new FilterMenu().getFilters().forEach(filter -> {
             MenuItem item = new MenuItem(filter.getName());
             item.setOnAction(e->{
-                //TODO: Associer l'action à l'image view
-                System.out.println("Associer !!");
+                listener.changeImage(filter.apply(listener.getImage()));
             });
             filtersMenu.getItems().add(item);
         });
+        
+        
         this.getMenus().addAll(fileMenu,editMenu,selectionMenu,filtersMenu,settingsMenu,formMenu,windowMenu,helpMenu);
 
     }
@@ -92,4 +95,5 @@ public class ApplicationMenu extends MenuBar {
     			break;
     	}
     }
+
 }

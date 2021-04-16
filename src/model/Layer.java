@@ -37,7 +37,7 @@ public class Layer extends Canvas {
         //System.out.println("Layer Handler Created");
         this.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 e -> {
-                    gc.fillOval(e.getX(), e.getY(), 20, 20);
+                    gc.fillOval(e.getX() - 10, e.getY() - 10, 20, 20);
                 });
     }
 
