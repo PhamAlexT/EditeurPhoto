@@ -1,6 +1,8 @@
 package model.forms;
 
-public abstract class BasicForm {
+import java.io.Serializable;
+
+public abstract class BasicForm implements Serializable {
     double x;
     double y;
 

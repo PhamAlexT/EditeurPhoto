@@ -86,5 +86,7 @@ public class Layer extends Canvas {
     }
 
 
-
+	public ArrayList<Object> getBasicForm() {
+    	return this.basicForms;
+	}
 }

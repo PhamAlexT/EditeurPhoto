@@ -122,8 +122,11 @@ public class Workspace {
     	this.imageView.setImage(img);
     }
     
-    
-    public Image getImage() {
+    public Image getImgSource() {
     	return this.imgSource;
+    }
+
+    public ArrayList<Layer> getLayers() {
+        return layers;
     }
 }
