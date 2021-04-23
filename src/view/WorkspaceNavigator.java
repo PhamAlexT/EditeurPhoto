@@ -52,13 +52,13 @@ public class WorkspaceNavigator {
 		});
 		
 		// Si on change le slider, on change le Texfield affichant le facteur de scaling
-		// TODO: Actualisation à la saisie
+		// TODO: Actualisation ï¿½ la saisie
 		scaleFactor.textProperty().addListener((observable, oldValue, newValue) -> {
-			workspace.getStackPane().setScaleX(scaler.getValue());
-			workspace.getStackPane().setScaleY(scaler.getValue());
+			workspace.getGroup().setScaleX(scaler.getValue());
+			workspace.getGroup().setScaleY(scaler.getValue());
 		});
 	}
-
+	
 	
 	public ScrollPane getScrollPane() {
 		return scrollPane;

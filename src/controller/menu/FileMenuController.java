@@ -76,6 +76,10 @@ public class FileMenuController {
     	ws.changeImage(img);
     }
     
+    public void setDrawMode(String newMode) {
+    	ws.setDrawMode(newMode);
+    }
+    
     public Image getImage() {
     	return ws.getImage();
     }

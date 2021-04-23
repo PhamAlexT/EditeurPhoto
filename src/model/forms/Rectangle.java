@@ -1,11 +1,24 @@
 package model.forms;
 
 public class Rectangle extends BasicForm {
-    double lenght;
     double width;
+    double height;
 
-    public Rectangle(double x, double y) {
-        super(x, y);
+    public Rectangle(double beginX, double beginY) {
+        super(beginX, beginY);
+    }
+    
+    public void setEndPoint(double endX, double endY) {
+    	this.width = endX - this.x;
+    	this.height = endY - this.y;
+	}
+    
+    public double getWidth() {
+    	return width;
+    }
+    
+    public double getHeight() {
+    	return height;
     }
 
     @Override

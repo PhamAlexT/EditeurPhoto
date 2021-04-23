@@ -47,16 +47,21 @@ public class ApplicationMenu extends MenuBar {
         
         
         //Menu Formes Géométriques
-        ToggleGroup toggleGroup = new ToggleGroup();
         
         CheckMenuItem line = new CheckMenuItem("Ligne");
-        //line.setToggleGroup(toggleGroup);
+        line.setOnAction( e -> {
+        	listener.setDrawMode("default");
+        });
         
         CheckMenuItem rectangle = new CheckMenuItem("Rectangle");
-        //rectangle.setToggleGroup(toggleGroup);
+        rectangle.setOnAction(e -> {
+        	listener.setDrawMode("rectangle");
+        });
         
         CheckMenuItem cercle = new CheckMenuItem("Cercle");
-        //cercle.setToggleGroup(toggleGroup);
+        cercle.setOnAction(e -> {
+        	listener.setDrawMode("circle");
+        });
         
         formMenu.getItems().addAll(line, rectangle, cercle);
 

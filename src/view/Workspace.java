@@ -47,10 +47,10 @@ public class Workspace {
     public void addToMain() {
         System.out.println("Adding Graphical elements to the main view");
         
-        root.setCenter(navigationInterface.getScrollPane()); //On pourrait utiliser un setCenter sur le borderpane root
+        root.setCenter(navigationInterface.getScrollPane());
 
         HBox bottomBar = new HBox(new Label("Zoom"), navigationInterface.getSlider(), navigationInterface.getScaleFactor(), choiceBox, addLayer);
-		root.setBottom(bottomBar); //On pourrait utiliser un setBottom sur le borderpane root
+		root.setBottom(bottomBar);
         
     }
 
@@ -73,16 +73,15 @@ public class Workspace {
     	int newLayerPos = layers.size() - 1;
     	Layer newLayer = layers.get(newLayerPos);
     	
-		group.getChildren().add(newLayer); //To change for when we have more layer
-        layers.get(newLayerPos).toFront(); //To change for when we have more layer
+		group.getChildren().add(newLayer); 
+        layers.get(newLayerPos).toFront(); 
 	}
     
     
 	private void updateChoiceBox(Layer newLayer) {
 		choiceBox.getItems().add(newLayer.getName()); //Calque selection
         choiceBox.setValue(newLayer.getName());
-	}
-	
+	}	
 	
 	public void setImage(Image image) {
 		imgSource = image;
@@ -94,11 +93,20 @@ public class Workspace {
         layers = new ArrayList<Layer>();
         addNewLayer();
         
+        choiceBox.setOnAction(e ->{
+        	int selectedIndex = choiceBox.getSelectionModel().getSelectedIndex();
+        	layers.get(selectedIndex).toFront();;
+        });
+        
         navigationInterface = new WorkspaceNavigator(this);
         
         addToMain();
 	}
 
+	public void setDrawMode(String newMode) {
+		Layer currentLayer = layers.get(layers.size()-1);
+		currentLayer.setDrawMode(newMode);
+	}
 	
     public StackPane getStackPane() {
         return stackPane;
