@@ -5,13 +5,13 @@ import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import model.Layer;
 import model.Project;
+import model.forms.BasicForm;
 import view.ApplicationMenu;
 import view.Workspace;
 
 import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.ArrayList;
 
 public class FileMenuController {
 	
@@ -48,19 +48,34 @@ public class FileMenuController {
     }
     
 
-    public void openProject(){
-    	
+    public void openProject()  {
+    	System.out.println("Ouverture projet");
         FileChooser fc = new FileChooser();
         fc.setTitle("Ouvrir un projet");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Projet BPEP (*.bpep)","*.bpep"));
+        //fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Projet BPEP (*.bpep)","*.bpep"));
         
         File file = fc.showOpenDialog(am.getScene().getWindow());
         if (file != null){
-            //TODO: Décomposer les étapes de re-construction
-            // Renseigner fop
-            // Reconstruire les layers
-            Project p = Project.fileToProject(file);
+            ObjectInputStream ois = null;
+            try {
+                ois = new ObjectInputStream(new FileInputStream(file));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            ArrayList<Object> woi = new ArrayList<>();
+            try {
+                woi=(ArrayList<Object>)ois.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("fin de lecture");
+            for (int i = 0; i < woi.size();i++){
+                System.out.println(woi.get(i).getClass().getName());
+            }
         }
     }
     
@@ -82,6 +97,7 @@ public class FileMenuController {
 
         Image img = this.ws.getImgSource();
         int compteur = 0;
+
         if (file != null) {
             try {
                 fop = new FileOutputStream(file);
@@ -93,7 +109,7 @@ public class FileMenuController {
 
                 //Ecrire les arrays de BasicForm des différents calques
                 for (Layer l : this.ws.getLayers()) {
-                    oos.writeObject(l.getBasicForm());
+                    //oos.writeObject(l.getBasicForm());
                     compteur++;
                 }
 

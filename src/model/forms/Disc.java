@@ -4,7 +4,7 @@ public class Disc extends BasicForm{
 
     private double ray;
 
-    public Disc(double x, double y,double r){
+    public Disc(double x, double y, double r){
         super(x,y);
         this.ray = r;
     }
@@ -12,6 +12,10 @@ public class Disc extends BasicForm{
     @Override
     public String toString() {
         return "Rectangle{} at x=" + this.x + " and y=" + this.y;
+    }
+
+    public double getRay(){
+        return ray;
     }
 
 }

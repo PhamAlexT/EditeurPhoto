@@ -1,24 +1,21 @@
 package view;
 
 
-import javafx.beans.Observable;
-
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import model.Layer;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.NoSuchElementException;
 
 public class Workspace {
     BorderPane root;//Idée : à la place du main passer le root en param
@@ -31,7 +28,7 @@ public class Workspace {
     private Image imgSource;
     private ArrayList<Layer> layers;
     private Button addLayer;
-    
+    private ColorPicker colorPicker;
 
     public Workspace(BorderPane mainView) {
         this.root = mainView;
@@ -42,7 +39,6 @@ public class Workspace {
         addLayer.setOnAction(e -> addNewLayer());
 
     }
-
     
     public void addToMain() {
         System.out.println("Adding Graphical elements to the main view");
@@ -51,7 +47,30 @@ public class Workspace {
 
         HBox bottomBar = new HBox(new Label("Zoom"), navigationInterface.getSlider(), navigationInterface.getScaleFactor(), choiceBox, addLayer);
 		root.setBottom(bottomBar);
-        
+
+		addToMainLeftPanel();
+
+    }
+
+    public void addToMainLeftPanel(){
+        HBox shapes = new HBox();
+
+        Button stroke = new Button("Stroke");
+        stroke.setOnAction(e->this.getCurrentLayer().addStrokeListener());
+        Button rectangle = new Button("Rectangle");
+        //Image circleP = new Image(".../res/Square.png");
+        //square.setGraphic(new ImageView(circleP));
+
+        Button disc = new Button("Cercle");
+        disc.setOnAction(e->this.getCurrentLayer().addDiscListener());
+        //circle.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("res/Circle.png"))));
+
+        colorPicker = new ColorPicker();
+        colorPicker.setValue(Color.BLACK);
+        colorPicker.valueProperty().addListener(e->transmitColorToCurrentLayer());
+        shapes.getChildren().addAll(stroke,rectangle,disc,colorPicker);
+
+        root.setLeft(shapes);
     }
 
     public void addNewLayer() {
@@ -60,12 +79,11 @@ public class Workspace {
         int height = (int)group.maxHeight(1000);
         
 		Layer newLayer = new Layer(name, width, height);
-        
+
         layers.add(newLayer);
         
         updateChoiceBox(newLayer);
         addLayer2View();
-
     }
 
     
@@ -101,11 +119,11 @@ public class Workspace {
         navigationInterface = new WorkspaceNavigator(this);
         
         addToMain();
+
 	}
 
 	public void setDrawMode(String newMode) {
 		Layer currentLayer = layers.get(layers.size()-1);
-		currentLayer.setDrawMode(newMode);
 	}
 	
     public StackPane getStackPane() {
@@ -116,8 +134,7 @@ public class Workspace {
     public Group getGroup() {
         return group;
     }
-    
-    
+
     public void changeImage(Image img) {
     	this.imageView.setImage(img);
     }
@@ -129,4 +146,16 @@ public class Workspace {
     public ArrayList<Layer> getLayers() {
         return layers;
     }
+
+    public Layer getCurrentLayer(){
+        for (Layer l:layers){
+            if (l.getName() == choiceBox.getValue()) return l;
+        }
+        throw new NoSuchElementException();
+    }
+
+    private void transmitColorToCurrentLayer(){
+        this.getCurrentLayer().setColor(colorPicker.getValue());
+    }
+
 }

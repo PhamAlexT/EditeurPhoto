@@ -9,6 +9,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 
+import java.io.IOException;
+
 public class ApplicationMenu extends MenuBar {
     
 	FileMenuController listener;
