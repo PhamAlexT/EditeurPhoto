@@ -1,12 +1,14 @@
 package model.forms;
 
+import javafx.scene.paint.Color;
+
 public class Stroke extends BasicForm {
 
     private double endX;
     private double endY;
 
-    public Stroke(double x1, double y1, double x2, double y2) {
-        super(x1, y1);
+    public Stroke(double x1, double y1, Color c,double x2, double y2) {
+        super(x1, y1, c);
         endX = x2;
         endY = y2;
 
