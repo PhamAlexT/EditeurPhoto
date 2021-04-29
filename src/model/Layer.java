@@ -97,6 +97,34 @@ public class Layer extends Canvas {
         this.setOnMouseReleased(e->endDisc(e));
     }
 
+    
+	private void drawingRect(MouseEvent e) {
+		// TODO Auto-generated method stub
+		gc.setStroke(Color.BLACK);
+        clearLayer();
+        drawAllShape();
+
+        gc.setFill(Color.BLUE);
+        gc.fillRect(this.beginX, this.beginY, Math.abs(this.beginX - e.getX()), Math.abs(this.beginY - e.getY()));
+
+	}
+
+
+	private void  endRect(MouseEvent e) {
+		// TODO Auto-generated method stub
+		basicForms.add(new Rectangle(beginX, beginY, this.color, e.getX(), e.getY()));
+        clearLayer();
+        gc.setStroke(Color.BLACK);
+        drawAllShape();
+	}
+
+	
+	public void addRectListener(){
+        this.setOnMousePressed(e->beginShape(e));
+        this.setOnMouseDragged(e->drawingRect(e));
+        this.setOnMouseReleased(e->endRect(e));
+    }
+
 
 	public ArrayList<BasicForm> getBasicForm() {
     	return this.basicForms;
@@ -105,6 +133,8 @@ public class Layer extends Canvas {
 	void drawAllShape(){
         int compteurC = 0;
         int compteurL = 0;
+        int compteurR = 0;
+        
         for (BasicForm form:basicForms){
 
             if (form instanceof Stroke){
@@ -118,10 +148,17 @@ public class Layer extends Canvas {
                 gc.setFill(form.getColor());
                 gc.fillOval(form.getX(),form.getY(), ((Disc) form).getRay(),((Disc) form).getRay());
             }
+            
+            else if (form instanceof Rectangle) {
+            	compteurR++;
+            	gc.setFill(form.getColor());
+            	gc.fillRect(form.getX(), form.getY(), ((Rectangle) form).getWidth(), ((Rectangle) form).getHeight());
+            }
 
         }
-        System.out.println("Boucle de dessin: " + compteurL + " de cercles");
+        System.out.println("Boucle de dessin: " + compteurL + " de lignes");
         System.out.println("Boucle de dessin: " + compteurC + " de cercles");
+        System.out.println("Boucle de dessin: " + compteurR + " de rectangles");
     }
 
     void clearLayer(){

@@ -58,6 +58,7 @@ public class Workspace {
         Button stroke = new Button("Stroke");
         stroke.setOnAction(e->this.getCurrentLayer().addStrokeListener());
         Button rectangle = new Button("Rectangle");
+        rectangle.setOnAction(e -> this.getCurrentLayer().addRectListener());
         //Image circleP = new Image(".../res/Square.png");
         //square.setGraphic(new ImageView(circleP));
 
