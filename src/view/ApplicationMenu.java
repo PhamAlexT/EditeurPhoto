@@ -29,8 +29,11 @@ public class ApplicationMenu extends MenuBar {
 
         MenuItem saveProjectAs = new MenuItem("Enregistrer sous");
         saveProjectAs.setOnAction(e->fileHandler("saveProjectAs"));
-        
-        fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs);
+
+        MenuItem printing = new MenuItem("Imprimer");
+        printing.setOnAction(e->fileHandler("printing"));
+
+        fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs,printing);
 
       //Filtres
         new FilterController().getFilters().forEach(filter -> {
@@ -65,6 +68,9 @@ public class ApplicationMenu extends MenuBar {
     		case "saveProjectAs":
     			listener.saveProjectAs();
     			break;
+            case "printing":
+                listener.printImage();
+                break;
     	}
     }
 
