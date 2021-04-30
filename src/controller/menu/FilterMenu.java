@@ -3,13 +3,20 @@ package controller.menu;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.application.Application;
 import javafx.scene.paint.Color;
 import model.Filter;
+import view.ApplicationMenu;
+import view.Workspace;
 
 public class FilterMenu {
     private List<Filter> filters;
-
-
+    ApplicationMenu am;
+    Workspace ws;
+    public FilterMenu(ApplicationMenu am, Workspace ws){
+        this.am = am;
+        this.ws = ws;
+    }
     public FilterMenu() {
         initFiters();
     }

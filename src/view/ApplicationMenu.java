@@ -19,16 +19,9 @@ public class ApplicationMenu extends MenuBar {
 
         Menu fileMenu = new Menu("Fichier");
         Menu editMenu = new Menu("Editer");
-        Menu selectionMenu = new Menu("SÃ©lection");
         Menu filtersMenu = new Menu("Filtres");
-        Menu settingsMenu = new Menu("ParamÃ¨tres");
-        Menu formMenu = new Menu("Formes Géométriques");
-        Menu windowMenu = new Menu("Fenêtre");
         Menu helpMenu = new Menu("Aide");
 
-        
-        
-    	
         // Menu Fichier
         MenuItem newProject = new MenuItem("Nouveau");
         newProject.setOnAction(e->fileHandler("newFile"));
@@ -43,42 +36,19 @@ public class ApplicationMenu extends MenuBar {
         saveProjectAs.setOnAction(e->fileHandler("saveProjectAs"));
         
         fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs);
-        
-        
-        
-        
-        
-        //Menu Formes Géométriques
-        
-        CheckMenuItem line = new CheckMenuItem("Ligne");
-        line.setOnAction( e -> {
-        	listener.setDrawMode("default");
-        });
-        
-        CheckMenuItem rectangle = new CheckMenuItem("Rectangle");
-        rectangle.setOnAction(e -> {
-        	listener.setDrawMode("rectangle");
-        });
-        
-        CheckMenuItem cercle = new CheckMenuItem("Cercle");
-        cercle.setOnAction(e -> {
-        	listener.setDrawMode("circle");
-        });
-        
-        formMenu.getItems().addAll(line, rectangle, cercle);
 
-      
       //Filtres
         new FilterMenu().getFilters().forEach(filter -> {
             MenuItem item = new MenuItem(filter.getName());
+            /*
             item.setOnAction(e->{
                 listener.changeImage(filter.apply(listener.getImage()));
             });
+             */
             filtersMenu.getItems().add(item);
         });
-        
-        
-        this.getMenus().addAll(fileMenu,editMenu,selectionMenu,filtersMenu,settingsMenu,formMenu,windowMenu,helpMenu);
+
+        this.getMenus().addAll(fileMenu,editMenu,filtersMenu,helpMenu);
 
     }
     

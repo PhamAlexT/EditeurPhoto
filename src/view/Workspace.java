@@ -168,7 +168,8 @@ public class Workspace {
         stackPane = new StackPane(imageView);
         group = new Group(stackPane);
 
-        layers = new ArrayList<>();
+        layers = new ArrayList<Layer>();
+        choiceBox = new ChoiceBox<>();
 
         for (LayerInfo li : array) {
             Layer l = new Layer(li);

@@ -32,7 +32,6 @@ public class Filter implements Function<Image, Image> {
                 image.getPixelWriter().setColor(x, y, c2);
             }
         }
-
         return image;
     }
 
