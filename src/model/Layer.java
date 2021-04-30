@@ -1,13 +1,9 @@
 package model;
 
-import javafx.event.EventHandler;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import model.forms.Disc;
 import model.forms.Rectangle;
 import model.forms.BasicForm;
@@ -16,9 +12,12 @@ import model.forms.Stroke;
 import java.util.ArrayList;
 
 public class Layer extends Canvas {
+    //Info
     private String name;
     private GraphicsContext gc;
     private ArrayList<BasicForm> basicForms = new ArrayList<BasicForm>();
+
+    //Dessin
     private double beginX;
     private double beginY;
     private boolean drawingAllowed;
@@ -31,10 +30,7 @@ public class Layer extends Canvas {
         gc = this.getGraphicsContext2D();
 
         drawingAllowed = true;
-
     }
-
-
 
     public void setDim(int x, int y) {
     	this.setWidth(x);
@@ -54,7 +50,6 @@ public class Layer extends Canvas {
 
     private void drawingStroke(MouseEvent e){
         //TODO : Dessiner avec les bonnes couleurs?
-        gc.setStroke(this.color);
 
         clearLayer();
         drawAllShape(); //TODO
@@ -64,9 +59,9 @@ public class Layer extends Canvas {
     }
 
     private void endStroke(MouseEvent e){
-        basicForms.add(new Stroke(beginX,beginY,e.getX(),e.getY()));
+        basicForms.add(new Stroke(beginX,beginY, this.color ,e.getX(),e.getY()));
         clearLayer();
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(this.color);
         drawAllShape();
     }
 
@@ -82,11 +77,11 @@ public class Layer extends Canvas {
         drawAllShape();
 
         gc.setFill(Color.BLUE);
-        gc.fillOval(this.beginX,this.beginY,Math.abs(this.beginX-e.getX()),Math.abs(this.beginX-e.getX()));
+        gc.fillOval(this.beginX, this.beginY, Math.abs(this.beginX-e.getX()), Math.abs(this.beginX-e.getX()));
     }
 
     private void endDisc(MouseEvent e){
-        basicForms.add(new Disc(beginX,beginY,Math.abs(this.beginX-e.getX())));
+        basicForms.add(new Disc(beginX,beginY, this.color,Math.abs(this.beginX-e.getX())));
         clearLayer();
         gc.setStroke(Color.BLACK);
         drawAllShape();
@@ -98,38 +93,87 @@ public class Layer extends Canvas {
         this.setOnMouseReleased(e->endDisc(e));
     }
 
+    
+	private void drawingRect(MouseEvent e) {
+		// TODO Auto-generated method stub
+		gc.setStroke(Color.BLACK);
+        clearLayer();
+        drawAllShape();
+
+        gc.setFill(Color.BLUE);
+        gc.fillRect(this.beginX, this.beginY, Math.abs(this.beginX - e.getX()), Math.abs(this.beginY - e.getY()));
+
+	}
+
+
+	private void  endRect(MouseEvent e) {
+		// TODO Auto-generated method stub
+		basicForms.add(new Rectangle(beginX, beginY, this.color, e.getX(), e.getY()));
+        clearLayer();
+        gc.setStroke(Color.BLACK);
+        drawAllShape();
+	}
+
+	
+	public void addRectListener(){
+        this.setOnMousePressed(e->beginShape(e));
+        this.setOnMouseDragged(e->drawingRect(e));
+        this.setOnMouseReleased(e->endRect(e));
+    }
+
 
 	public ArrayList<BasicForm> getBasicForm() {
     	return this.basicForms;
 	}
 
 	void drawAllShape(){
-        int compteurC = 0;
-        int compteurL = 0;
+        
         for (BasicForm form:basicForms){
 
             if (form instanceof Stroke){
-                compteurL++;
+                gc.setStroke(form.getColor());
                 gc.strokeLine(((Stroke) form).getBeginX(),((Stroke) form).getBeginY(),((Stroke) form).getEndX(),((Stroke) form).getEndY());
             }
 
             else if (form instanceof Disc){
-                compteurC++;
-                gc.fillOval(this.beginX,this.beginY, ((Disc) form).getRay(),((Disc) form).getRay());
+                gc.setFill(form.getColor());
+                gc.fillOval(form.getX(),form.getY(), ((Disc) form).getRay(),((Disc) form).getRay());
+            }
+            
+            else if (form instanceof Rectangle) {
+            	System.out.println(form.getColor());
+            	gc.setFill(form.getColor());
+            	gc.fillRect(form.getX(), form.getY(), ((Rectangle) form).getWidth(), ((Rectangle) form).getHeight());
             }
 
         }
-        System.out.println("Boucle de dessin: " + compteurL + " de cercles");
-        System.out.println("Boucle de dessin: " + compteurC + " de cercles");
+
     }
 
     void clearLayer(){
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0,0,this.getWidth(),this.getHeight());
+        gc.clearRect(0,0,this.getWidth(),this.getHeight());
     }
 
     public void setColor(Color c){
         this.color = c;
+    }
+
+    private Layer(String name, int width, int height, ArrayList<BasicForm> array){
+        this(name,width,height);
+        this.basicForms = array;
+    }
+
+    public LayerInfo getInfo(){
+        return new LayerInfo(this.name,this.basicForms,this.getWidth(),this.getHeight());
+    }
+
+    public Layer(LayerInfo li){
+        super(li.width,li.height);
+        gc = this.getGraphicsContext2D();
+        this.name = li.name;
+        this.basicForms = li.basicForms;
+        for (BasicForm bf:this.basicForms) bf.fixColor();
+        this.drawAllShape();
     }
 
 

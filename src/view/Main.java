@@ -39,8 +39,6 @@ public class Main extends Application {
         FileMenuController fm = new FileMenuController(am, ws);
         am.addListener(fm);
         root.setTop(am);
-        
-        
 
         StackPane spr = new StackPane();
 
@@ -54,13 +52,7 @@ public class Main extends Application {
         scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
-    public void addNodeCenter(Node n){
-        root.setCenter(n);
-    }
-
-    public void addNodeBottom(Node n, int column, int row){
-        bottomArea.add(n,column,row);
-    }
 }

@@ -1,11 +1,13 @@
 package model.forms;
 
+import javafx.scene.paint.Color;
+
 public class Disc extends BasicForm{
 
     private double ray;
 
-    public Disc(double x, double y, double r){
-        super(x,y);
+    public Disc(double x, double y, Color c,double r){
+        super(x,y,c);
         this.ray = r;
     }
 

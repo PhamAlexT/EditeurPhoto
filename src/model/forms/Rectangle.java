@@ -1,16 +1,19 @@
 package model.forms;
 
+import javafx.scene.paint.Color;
+
 public class Rectangle extends BasicForm {
     double width;
     double height;
 
-    public Rectangle(double beginX, double beginY) {
-        super(beginX, beginY);
+    public Rectangle(double beginX, double beginY , Color c, double endX, double endY) {
+        super(beginX, beginY, c);
+        setDim(endX, endY);
     }
     
-    public void setEndPoint(double endX, double endY) {
-    	this.width = endX - this.x;
-    	this.height = endY - this.y;
+    public void setDim(double endX, double endY) {
+    	this.width = Math.abs(endX - this.x);
+    	this.height = Math.abs(endY - this.y);
 	}
     
     public double getWidth() {
