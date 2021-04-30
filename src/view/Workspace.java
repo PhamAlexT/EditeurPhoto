@@ -3,10 +3,8 @@ package view;
 
 import controller.FilterController;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -14,8 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Layer;
 import model.LayerInfo;
+import model.filters.ComplexFilter;
 import model.filters.Filter;
 import model.filters.SimpleFilter;
 
@@ -85,21 +86,65 @@ public class Workspace {
         container.getChildren().addAll(new Label("Filtres" ),listOfFilers);
         FilterController fc = new FilterController(this);
 
+
         for (Filter f: fc.getFilters()){
+            if (f.getName().equals("Inverser")){
+                listOfFilers.getChildren().add(new Label("Simple filtre"));
+            }
+
+            else if (f.getName().equals("Noir et blanc")){
+                listOfFilers.getChildren().add(new Label("Filtres réglables"));
+            }
+
             Button b = new Button(f.getName());
+
             listOfFilers.getChildren().add(b);
-            System.out.println();
+
             if (f instanceof SimpleFilter){
-                System.out.println(f.getName());
                 b.setOnAction(e->
                         {
                         changeImage( (((SimpleFilter) f).apply(this.imgSource)));
                         });
-            } else {
-                System.out.println("TODO");
+            } else if (f instanceof ComplexFilter) {
+                b.setOnAction(e->{
+                    Image backup = this.imgSource;
+                    String title = "Paramètres du filtre: " + f.getName();
+
+                    Slider s = new Slider(((ComplexFilter) f).getVmin(),((ComplexFilter) f).getVmax(),((ComplexFilter) f).getAverage());
+                    s.setShowTickLabels(true);
+                    s.setMajorTickUnit(0.25f);
+                    s.setBlockIncrement(0.1f);
+
+                    s.valueProperty().addListener(ev->((ComplexFilter) f).apply(this.imgSource, s.getValue()));
+
+                    Button validate = new Button("Valider");
+                    Button cancel = new Button("Annuler");
+                    HBox buttonChoice = new HBox(validate,cancel);
+
+                    VBox layoutWindow = new VBox(new Label("Paramètre du filtre:"));
+                    layoutWindow.getChildren().addAll(s,buttonChoice);
+
+                    Scene scene = new Scene(layoutWindow);
+                    Stage newWindow = new Stage();
+                    newWindow.setTitle(title);
+                    newWindow.setScene(scene);
+                    newWindow.initModality(Modality.WINDOW_MODAL);
+                    newWindow.initOwner(this.root.getScene().getWindow());
+
+                    newWindow.show();
+                    Stage stageToClose = (Stage) validate.getScene().getWindow();
+
+                    validate.setOnAction(ev->{
+                        stageToClose.close();
+                    });
+
+                    cancel.setOnAction(ev->{
+                        this.imgSource = backup;
+                        stageToClose.close();
+                    });
+                });
             }
         }
-
         root.setLeft(container);
     }
 

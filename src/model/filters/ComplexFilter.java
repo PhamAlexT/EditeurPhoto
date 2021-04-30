@@ -10,8 +10,9 @@ import javafx.scene.paint.Color;
 
 public class ComplexFilter extends Filter<BiFunction<Color, Double, Color>> implements BiFunction<Image, Double, Image> {
 
-    double vmin;
-    double vmax;
+    private double vmin;
+    private double vmax;
+    private double average;
     private String name;
     private BiFunction<Color, Double, Color> colorMap;
 
@@ -28,6 +29,7 @@ public class ComplexFilter extends Filter<BiFunction<Color, Double, Color>> impl
                 vmin = 0;
                 vmax = 1;
         }
+        average = (vmax-vmin)/2;
     }
 
     @Override
@@ -51,4 +53,15 @@ public class ComplexFilter extends Filter<BiFunction<Color, Double, Color>> impl
         return name;
     }
 
+    public double getVmin() {
+        return vmin;
+    }
+
+    public double getVmax() {
+        return vmax;
+    }
+
+    public double getAverage() {
+        return average;
+    }
 }

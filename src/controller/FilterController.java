@@ -25,10 +25,10 @@ public class FilterController {
 
     public void initFilters() {
         filters = Arrays.asList(
-                new SimpleFilter("Invert", c -> c.invert()),
+                new SimpleFilter("Inverser", c -> c.invert()),
                 new SimpleFilter("Nuance de gris", c -> c.grayscale()),
-                new SimpleFilter("Saturé", c->c.saturate()),
-                new SimpleFilter("Désaturé", c->c.desaturate()),
+                new SimpleFilter("Saturer", c->c.saturate()),
+                new SimpleFilter("Désaturer", c->c.desaturate()),
 
                 new ComplexFilter("Noir et blanc", (c,d) -> sumOfColor(c) < d ? Color.BLACK : Color.WHITE),
                 new ComplexFilter("Rouge", (c,d) -> Color.color(d, c.getGreen(), c.getBlue())),
