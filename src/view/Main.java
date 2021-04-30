@@ -19,6 +19,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Main extends Application {
 
     Scene scene;
@@ -35,9 +38,12 @@ public class Main extends Application {
 
         root = new BorderPane();
         Workspace ws = new Workspace(root);
+
         ApplicationMenu am = new ApplicationMenu(this);
         FileMenuController fm = new FileMenuController(am, ws);
         am.addListener(fm);
+
+
         root.setTop(am);
 
         StackPane spr = new StackPane();
@@ -49,10 +55,15 @@ public class Main extends Application {
         root.setBottom(bottomArea);
 
         primaryStage.setTitle("Photo Editor");
+
+        try {
+            primaryStage.getIcons().add(new Image(new FileInputStream("src/res/Icon.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
 }

@@ -1,15 +1,10 @@
 package view;
 
 import controller.menu.FileMenuController;
-import controller.menu.FilterMenu;
-import javafx.scene.control.CheckMenuItem;
+import controller.FilterController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.ToggleGroup;
-
-import java.io.IOException;
 
 public class ApplicationMenu extends MenuBar {
     
@@ -38,7 +33,7 @@ public class ApplicationMenu extends MenuBar {
         fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs);
 
       //Filtres
-        new FilterMenu().getFilters().forEach(filter -> {
+        new FilterController().getFilters().forEach(filter -> {
             MenuItem item = new MenuItem(filter.getName());
             /*
             item.setOnAction(e->{

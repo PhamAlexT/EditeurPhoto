@@ -1,6 +1,7 @@
 package view;
 
 
+import controller.FilterController;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -11,9 +12,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.Layer;
 import model.LayerInfo;
+import model.filters.Filter;
+import model.filters.SimpleFilter;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -30,6 +34,7 @@ public class Workspace {
     private ArrayList<Layer> layers;
     private Button addLayer;
     private ColorPicker colorPicker;
+    Group buffer; // Used when modification
 
     public Workspace(BorderPane mainView) {
         this.root = mainView;
@@ -53,25 +58,49 @@ public class Workspace {
     }
 
     public void addToMainLeftPanel() {
+        VBox container = new VBox();
+
+        container.getChildren().add(new Label("Dessin"));
         HBox shapes = new HBox();
 
         Button stroke = new Button("Stroke");
         stroke.setOnAction(e -> this.getCurrentLayer().addStrokeListener());
+
         Button rectangle = new Button("Rectangle");
         rectangle.setOnAction(e -> this.getCurrentLayer().addRectListener());
-        //Image circleP = new Image(".../res/Square.png");
-        //square.setGraphic(new ImageView(circleP));
 
         Button disc = new Button("Cercle");
         disc.setOnAction(e -> this.getCurrentLayer().addDiscListener());
-        //circle.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("res/Circle.png"))));
 
+        shapes.getChildren().addAll(stroke, rectangle, disc);
+        container.getChildren().add(shapes);
+
+        container.getChildren().add(new Label("Couleur"));
         colorPicker = new ColorPicker();
         colorPicker.valueProperty().addListener(e -> transmitColorToCurrentLayer());
         colorPicker.setValue(Color.BLACK);
-        shapes.getChildren().addAll(stroke, rectangle, disc, colorPicker);
+        container.getChildren().addAll(colorPicker);
 
-        root.setLeft(shapes);
+        VBox listOfFilers = new VBox();
+        container.getChildren().addAll(new Label("Filtres" ),listOfFilers);
+        FilterController fc = new FilterController(this);
+
+        for (Filter f: fc.getFilters()){
+            Button b = new Button(f.getName());
+            listOfFilers.getChildren().add(b);
+            System.out.println();
+            if (f instanceof SimpleFilter){
+                System.out.println(f.getName());
+                b.setOnAction(e->
+                        {
+                        changeImage( (((SimpleFilter) f).apply(this.imgSource)));
+                        });
+            } else {
+                System.out.println("TODO");
+            }
+        }
+
+        root.setLeft(container);
     }
 
     public void addNewLayer() {
