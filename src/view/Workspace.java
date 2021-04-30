@@ -2,6 +2,8 @@ package view;
 
 
 import controller.FilterController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -115,7 +117,7 @@ public class Workspace {
                     s.setMajorTickUnit(0.25f);
                     s.setBlockIncrement(0.1f);
 
-                    s.valueProperty().addListener(ev->((ComplexFilter) f).apply(this.imgSource, s.getValue()));
+                    s.valueProperty().addListener(ev-> changeImage(((ComplexFilter) f).apply(this.imgSource,s.getValue())));
 
                     Button validate = new Button("Valider");
                     Button cancel = new Button("Annuler");

@@ -3,7 +3,6 @@ package model.filters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.image.Image;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javafx.scene.paint.Color;
