@@ -38,18 +38,8 @@ public class ApplicationMenu extends MenuBar {
 
         fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs,printing,export);
 
-      //Filtres
-        new FilterController().getFilters().forEach(filter -> {
-            MenuItem item = new MenuItem(filter.getName());
-            /*
-            item.setOnAction(e->{
-                listener.changeImage(filter.apply(listener.getImage()));
-            });
-             */
-            filtersMenu.getItems().add(item);
-        });
 
-        this.getMenus().addAll(fileMenu,editMenu,filtersMenu,helpMenu);
+        this.getMenus().addAll(fileMenu,editMenu,helpMenu);
 
     }
     

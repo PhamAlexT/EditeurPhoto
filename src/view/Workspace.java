@@ -37,7 +37,6 @@ public class Workspace {
     private ArrayList<Layer> layers;
     private Button addLayer;
     private ColorPicker colorPicker;
-    private CheckBox filterOnAll;
 
     public Workspace(BorderPane mainView) {
         this.root = mainView;
@@ -75,20 +74,26 @@ public class Workspace {
         disc.setOnAction(e -> this.getCurrentLayer().addDiscListener());
 
         shapes.getChildren().addAll(stroke, rectangle, disc);
+
+        Button move = new Button("Sélection et déplacement");
+
+
         container.getChildren().add(shapes);
+        move.setOnAction(e->this.getCurrentLayer().addMoveListener());
 
         container.getChildren().add(new Label("Couleur"));
+        container.getChildren().add(move);
+        move.setMaxWidth(Double.MAX_VALUE);
+
         colorPicker = new ColorPicker();
         colorPicker.valueProperty().addListener(e -> transmitColorToCurrentLayer());
         colorPicker.setValue(Color.BLACK);
         container.getChildren().addAll(colorPicker);
 
         VBox listOfFilers = new VBox();
-        filterOnAll = new CheckBox();
-        filterOnAll.setAllowIndeterminate(false);
-        filterOnAll.setSelected(true);
-        VBox paramsFilter = new VBox(new Label("Appliquer sur toutes l'images"), filterOnAll);
-        container.getChildren().addAll(new Label("Filtres"), paramsFilter, listOfFilers);
+
+        //VBox paramsFilter = new VBox(new Label("Appliquer sur toutes l'images"));
+        container.getChildren().addAll(new Label("Filtres"), listOfFilers);
 
         FilterController fc = new FilterController(this);
 

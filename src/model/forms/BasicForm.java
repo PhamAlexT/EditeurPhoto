@@ -2,6 +2,7 @@ package model.forms;
 
 import java.io.Serializable;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /*
@@ -40,6 +41,18 @@ public abstract class BasicForm implements Serializable {
     public void fixColor(){
         this.color = this.sc.getFXColor();
     }
+
+    public abstract boolean isInside(double x, double y);
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public abstract void draw(GraphicsContext gc);
 
     public class SerializableColor implements Serializable
     {
