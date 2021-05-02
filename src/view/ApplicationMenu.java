@@ -33,7 +33,10 @@ public class ApplicationMenu extends MenuBar {
         MenuItem printing = new MenuItem("Imprimer");
         printing.setOnAction(e->fileHandler("printing"));
 
-        fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs,printing);
+        MenuItem export = new MenuItem("Exporter");
+        export.setOnAction(e->fileHandler("export"));
+
+        fileMenu.getItems().addAll(newProject, openProject, saveProject,saveProjectAs,printing,export);
 
       //Filtres
         new FilterController().getFilters().forEach(filter -> {
@@ -56,22 +59,25 @@ public class ApplicationMenu extends MenuBar {
     
     private void fileHandler(String action) {
     	switch(action) {
-    		case "newFile":
-    			listener.newFile();
-    			break;
-    		case "openProject":
-    			listener.openProject();
-    			break;
-    		case "saveProject":
-    			listener.saveProject();
-    			break;
-    		case "saveProjectAs":
-    			listener.saveProjectAs();
-    			break;
+            case "newFile":
+                listener.newFile();
+                break;
+            case "openProject":
+                listener.openProject();
+                break;
+            case "saveProject":
+                listener.saveProject();
+                break;
+            case "saveProjectAs":
+                listener.saveProjectAs();
+                break;
             case "printing":
                 listener.printImage();
                 break;
-    	}
+            case "export":
+                listener.exportImage();
+                break;
+        }
     }
 
 }

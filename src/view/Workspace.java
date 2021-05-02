@@ -2,10 +2,9 @@ package view;
 
 
 import controller.FilterController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,13 +30,14 @@ public class Workspace {
     WorkspaceNavigator navigationInterface;
     Group group; // Pour mettre tout les layers;
     StackPane stackPane;
+    Group buffer; // Used when modification
     private ChoiceBox<String> choiceBox;
     private ImageView imageView = new ImageView();
     private Image imgSource;
     private ArrayList<Layer> layers;
     private Button addLayer;
     private ColorPicker colorPicker;
-    Group buffer; // Used when modification
+    private CheckBox filterOnAll;
 
     public Workspace(BorderPane mainView) {
         this.root = mainView;
@@ -46,7 +46,6 @@ public class Workspace {
 
         addLayer = new Button("Add Layer");
         addLayer.setOnAction(e -> addNewLayer());
-
     }
 
     public void addToMain() {
@@ -85,46 +84,51 @@ public class Workspace {
         container.getChildren().addAll(colorPicker);
 
         VBox listOfFilers = new VBox();
-        container.getChildren().addAll(new Label("Filtres" ),listOfFilers);
+        filterOnAll = new CheckBox();
+        filterOnAll.setAllowIndeterminate(false);
+        filterOnAll.setSelected(true);
+        VBox paramsFilter = new VBox(new Label("Appliquer sur toutes l'images"), filterOnAll);
+        container.getChildren().addAll(new Label("Filtres"), paramsFilter, listOfFilers);
+
         FilterController fc = new FilterController(this);
 
-
-        for (Filter f: fc.getFilters()){
-            if (f.getName().equals("Inverser")){
-                listOfFilers.getChildren().add(new Label("Simple filtre"));
-            }
-
-            else if (f.getName().equals("Noir et blanc")){
+        for (Filter f : fc.getFilters()) {
+            if (f.getName().equals("Inverser")) {
+                listOfFilers.getChildren().add(new Label("Filtre simple"));
+            } else if (f.getName().equals("Noir et blanc")) {
                 listOfFilers.getChildren().add(new Label("Filtres réglables"));
             }
 
             Button b = new Button(f.getName());
 
             listOfFilers.getChildren().add(b);
-
-            if (f instanceof SimpleFilter){
-                b.setOnAction(e->
-                        {
-                        changeImage( (((SimpleFilter) f).apply(this.imgSource)));
-                        });
+            b.setMaxWidth(Double.MAX_VALUE);
+            if (f instanceof SimpleFilter) {
+                b.setOnAction(e ->
+                {
+                    changeImage(((SimpleFilter) f).apply(this.imageView.getImage()));
+                    //changeImage( (((SimpleFilter) f).apply(this.imgSource)));
+                });
             } else if (f instanceof ComplexFilter) {
-                b.setOnAction(e->{
+                b.setOnAction(e -> {
                     Image backup = this.imgSource;
                     String title = "Paramètres du filtre: " + f.getName();
 
-                    Slider s = new Slider(((ComplexFilter) f).getVmin(),((ComplexFilter) f).getVmax(),((ComplexFilter) f).getAverage());
+                    Slider s = new Slider(((ComplexFilter) f).getVmin(), ((ComplexFilter) f).getVmax(), ((ComplexFilter) f).getAverage());
                     s.setShowTickLabels(true);
                     s.setMajorTickUnit(0.25f);
                     s.setBlockIncrement(0.1f);
 
-                    s.valueProperty().addListener(ev-> changeImage(((ComplexFilter) f).apply(this.imgSource,s.getValue())));
+                    s.valueProperty().addListener(ev -> {
+                        changeImage(((ComplexFilter) f).apply(this.imageView.getImage(), s.getValue()));
+                    });
 
                     Button validate = new Button("Valider");
                     Button cancel = new Button("Annuler");
-                    HBox buttonChoice = new HBox(validate,cancel);
+                    HBox buttonChoice = new HBox(validate, cancel);
 
                     VBox layoutWindow = new VBox(new Label("Paramètre du filtre:"));
-                    layoutWindow.getChildren().addAll(s,buttonChoice);
+                    layoutWindow.getChildren().addAll(s, buttonChoice);
 
                     Scene scene = new Scene(layoutWindow);
                     Stage newWindow = new Stage();
@@ -136,11 +140,11 @@ public class Workspace {
                     newWindow.show();
                     Stage stageToClose = (Stage) validate.getScene().getWindow();
 
-                    validate.setOnAction(ev->{
+                    validate.setOnAction(ev -> {
                         stageToClose.close();
                     });
 
-                    cancel.setOnAction(ev->{
+                    cancel.setOnAction(ev -> {
                         this.imgSource = backup;
                         stageToClose.close();
                     });
@@ -201,15 +205,6 @@ public class Workspace {
         addToMain();
     }
 
-    public void setDrawMode(String newMode) {
-        Layer currentLayer = layers.get(layers.size() - 1);
-    }
-
-    public StackPane getStackPane() {
-        return stackPane;
-    }
-
-
     public Group getGroup() {
         return group;
     }
@@ -266,7 +261,7 @@ public class Workspace {
         navigationInterface = new WorkspaceNavigator(this);
 
         addToMain();
-
     }
+
 
 }

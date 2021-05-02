@@ -2,9 +2,14 @@ package controller.menu;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Layer;
 import model.LayerInfo;
 import view.ApplicationMenu;
@@ -19,6 +24,8 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+
 /*
 Pour imprimer: https://stackoverflow.com/questions/31100226/how-to-print-on-printer-image-using-javafx8
  */
@@ -49,7 +56,6 @@ public class FileMenuController {
 
         File file = fc.showOpenDialog(this.am.getScene().getWindow());
         if (file != null) {
-            System.out.println("On crÃ©er un projet et on affiche la vue");
             Image img = new Image(file.toURI().toString());
             ws.setImage(img);
         }
@@ -160,9 +166,9 @@ public class FileMenuController {
         }
     }
 
-    public void printImage(){
+    public void printImage() {
         Group g = this.ws.getGroup();
-        BufferedImage bufferedImg = SwingFXUtils.fromFXImage(g.snapshot(new SnapshotParameters(),null),null);
+        BufferedImage bufferedImg = SwingFXUtils.fromFXImage(g.snapshot(new SnapshotParameters(), null), null);
         PrinterJob printJob = PrinterJob.getPrinterJob();
         printJob.setPrintable(new Printable() {
             @Override
@@ -173,7 +179,7 @@ public class FileMenuController {
                 if (pageIndex != 0) {
                     return NO_SUCH_PAGE;
                 }
-                graphics.drawImage(bufferedImg, x, y, bufferedImg.getWidth(),bufferedImg.getHeight(), null);
+                graphics.drawImage(bufferedImg, x, y, bufferedImg.getWidth(), bufferedImg.getHeight(), null);
                 return PAGE_EXISTS;
             }
         });
@@ -181,6 +187,52 @@ public class FileMenuController {
             printJob.print();
         } catch (PrinterException e1) {
             e1.printStackTrace();
+        }
+    }
+
+    public void exportImage() {
+        Group g = this.ws.getGroup();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(g.snapshot(new SnapshotParameters(), null), null);
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.*"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+        );
+        /*
+        AtomicReference<String> format = new AtomicReference<>(new String());
+
+        Button toPng = new Button("png");
+        Button toJPG = new Button("jpg");
+
+
+        Scene scene = new Scene(new HBox(toPng, toJPG));
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Exporter vers");
+        newWindow.setScene(scene);
+        newWindow.initModality(Modality.WINDOW_MODAL);
+        newWindow.initOwner(this.ws.getGroup().getScene().getWindow());
+        newWindow.setWidth(400);
+        newWindow.setHeight(200);
+        newWindow.show();
+        Stage stageToClose = (Stage) this.ws.getGroup().getScene().getWindow();
+        toPng.setOnAction(e -> {
+            format.set("png");
+            stageToClose.close();
+        });
+        toJPG.setOnAction(e -> {
+            format.set("jpg");
+            stageToClose.close();
+        });
+
+        */
+        File file = fc.showSaveDialog(this.am.getScene().getWindow());
+        if (file != null) {
+            try {
+                ImageIO.write(bufferedImage, "png", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
