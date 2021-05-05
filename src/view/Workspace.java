@@ -130,7 +130,7 @@ public class Workspace {
 
                     Button validate = new Button("Valider");
                     Button cancel = new Button("Annuler");
-                    HBox buttonChoice = new HBox(validate, cancel);
+                    HBox buttonChoice = new HBox(cancel, validate);
 
                     VBox layoutWindow = new VBox(new Label("Paramètre du filtre:"));
                     layoutWindow.getChildren().addAll(s, buttonChoice);
@@ -141,7 +141,8 @@ public class Workspace {
                     newWindow.setScene(scene);
                     newWindow.initModality(Modality.WINDOW_MODAL);
                     newWindow.initOwner(this.root.getScene().getWindow());
-
+                    newWindow.setHeight(120);
+                    newWindow.setWidth(400);
                     newWindow.show();
                     Stage stageToClose = (Stage) validate.getScene().getWindow();
 
